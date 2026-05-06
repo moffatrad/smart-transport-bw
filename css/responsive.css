@@ -1,0 +1,95 @@
+/* Responsive Styles */
+
+/* Small devices (phones, 375px and down) */
+@media (max-width: 375px) {
+    .app-container {
+        max-width: 100%;
+    }
+
+    .header h1 {
+        font-size: 1rem;
+    }
+
+    .quick-actions {
+        gap: 0.5rem;
+    }
+
+    .action-card {
+        padding: 0.625rem;
+    }
+
+    .action-card i {
+        font-size: 1.25rem;
+    }
+
+    .action-card span {
+        font-size: 0.6875rem;
+    }
+
+    .route-details {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .seat-controls .seat-btn {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .app-container {
+        max-width: 500px;
+        margin: 0 auto;
+        min-height: 100vh;
+        border-radius: 0;
+    }
+}
+
+/* Landscape orientation */
+@media (orientation: landscape) and (max-height: 500px) {
+    .main-content {
+        padding-bottom: 4rem;
+    }
+
+    .quick-actions {
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .action-card {
+        padding: 0.5rem;
+    }
+
+    .action-card i {
+        font-size: 1rem;
+    }
+
+    .bottom-nav {
+        padding: 0.5rem 1rem;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+    .btn-primary:hover,
+    .action-card:hover,
+    .route-card:hover {
+        transform: none;
+    }
+
+    .nav-item {
+        padding: 0.5rem;
+    }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
