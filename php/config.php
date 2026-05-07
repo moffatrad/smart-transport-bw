@@ -2,9 +2,9 @@
 // Smart Transport BW - Configuration File
 
 // Database Configuration
-define('DB_DSN', 'pgsql:host=ep-wandering-hat-ape43uns-pooler.c-7.us-east-1.aws.neon.tech;port=5432;dbname=neondb;sslmode=require;channel_binding=require');
-define('DB_USER', 'neondb_owner');
-define('DB_PASS', 'npg_kZcAmI02egYC');
+define('DB_DSN', 'pgsql:host=trolley.proxy.rlwy.net;port=51992;dbname=railway');
+define('DB_USER', 'postgres');
+define('DB_PASS', 'PpMzsPoLgBPpxFqHLfkcRxUSDXqQEqId');
 define('DB_OPTIONS', [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

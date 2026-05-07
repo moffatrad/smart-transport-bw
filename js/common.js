@@ -14,6 +14,16 @@ const liveMapState = {
     path: []
 };
 
+const miniMapState = {
+    map: null,
+    marker: null
+};
+
+const DEFAULT_PREVIEW_POSITION = {
+    lat: -24.6588,
+    lng: 25.9083
+};
+
 // DOM Elements
 const app = document.getElementById('app');
 const sideDrawer = document.getElementById('sideDrawer');
@@ -236,6 +246,19 @@ function updateUserUI() {
     document.getElementById('headerTitle').textContent = currentUser.userType === 'driver' ? 'Driver Dashboard' : 'Smart Transport BW';
     document.getElementById('headerActions').classList.remove('hidden');
     document.getElementById('dashboardSwitchBtn').classList.add('hidden');
+    
+    // Update profile header cards
+    document.getElementById('passengerProfileName').textContent = currentUser.name || 'User';
+    document.getElementById('passengerProfileEmail').textContent = currentUser.email || 'user@example.com';
+    document.getElementById('driverProfileName').textContent = currentUser.name || 'User';
+    document.getElementById('driverProfileEmail').textContent = currentUser.email || 'user@example.com';
+}
+
+function updateProfileScreen() {
+    if (!currentUser) return;
+    document.getElementById('profileName').textContent = currentUser.name || 'User';
+    document.getElementById('profilePhone').textContent = currentUser.phone || '+267 XXXXXXXX';
+    document.getElementById('profileEmail').textContent = currentUser.email || 'user@example.com';
 }
 
 function getDriverVehicles() {
@@ -306,6 +329,7 @@ function showPassengerDashboard() {
     document.getElementById('driverDashboard').classList.add('hidden');
     document.getElementById('headerTitle').textContent = 'Smart Transport BW';
     document.getElementById('bottomNav').classList.remove('hidden');
+    initMiniMapPreview();
 }
 
 function showDriverDashboard() {
@@ -508,6 +532,10 @@ function showMapContent() {
     document.getElementById('liveMapScreen').classList.remove('hidden');
     document.getElementById('headerTitle').textContent = 'Live Map';
     document.getElementById('bottomNav').classList.remove('hidden');
+    const coords = document.getElementById('liveMapCoordinates');
+    if (coords) {
+        coords.textContent = `${DEFAULT_PREVIEW_POSITION.lat.toFixed(6)}, ${DEFAULT_PREVIEW_POSITION.lng.toFixed(6)}`;
+    }
     initLiveMap();
     startLocationTracking();
 }
@@ -538,6 +566,60 @@ function initLiveMap() {
     liveMapState.map = map;
     liveMapState.polyline = L.polyline([], { color: '#10b981', weight: 5, opacity: 0.9 }).addTo(map);
     liveMapState.driverPath = L.polyline([], { color: '#2563eb', weight: 4, dashArray: '8,6', opacity: 0.8 }).addTo(map);
+}
+
+function initMiniMapPreview() {
+    if (miniMapState.map) {
+        return;
+    }
+
+    const center = [DEFAULT_PREVIEW_POSITION.lat, DEFAULT_PREVIEW_POSITION.lng];
+    const map = L.map('miniMapContainer', {
+        center,
+        zoom: 13,
+        zoomControl: false,
+        attributionControl: false,
+        dragging: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false,
+        boxZoom: false,
+        touchZoom: false
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: ''
+    }).addTo(map);
+
+    miniMapState.marker = L.circleMarker(center, {
+        radius: 8,
+        fillColor: '#10b981',
+        color: '#ffffff',
+        weight: 2,
+        fillOpacity: 0.95
+    }).addTo(map);
+    miniMapState.map = map;
+    updateMiniMapPreview(center[0], center[1]);
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                updateMiniMapPreview(position.coords.latitude, position.coords.longitude);
+                miniMapState.map.setView([position.coords.latitude, position.coords.longitude], 14);
+            },
+            () => {},
+            { enableHighAccuracy: true, timeout: 10000 }
+        );
+    }
+}
+
+function updateMiniMapPreview(lat, lng) {
+    if (!miniMapState.map || !miniMapState.marker) {
+        return;
+    }
+
+    const latLng = [lat, lng];
+    miniMapState.marker.setLatLng(latLng);
+    document.getElementById('previewCoordinates').textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
 }
 
 function startLocationTracking() {
@@ -598,6 +680,11 @@ function updateMapPosition(lat, lng, accuracy) {
         }).addTo(liveMapState.map).bindPopup('You');
     } else {
         liveMapState.marker.setLatLng(latLng);
+    }
+
+    const coords = document.getElementById('liveMapCoordinates');
+    if (coords) {
+        coords.textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
     }
 
     updateDriverMarker(lat, lng);

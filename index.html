@@ -137,12 +137,29 @@
             <div class="map-screen-header">
                 <button class="btn-secondary" onclick="returnHome()"><i class="fas fa-arrow-left"></i> Back</button>
             </div>
+            <div class="live-map-info">
+                <div class="map-coordinates">
+                    <div><strong>Live sample position</strong></div>
+                    <div id="liveMapCoordinates">-24.658800, 25.908300</div>
+                </div>
+            </div>
             <div id="mapContainer" class="live-map"></div>
             <div class="map-status" id="mapStatus">Waiting for GPS signal...</div>
         </div>
 
         <!-- Passenger Dashboard -->
         <div id="passengerDashboard" class="hidden">
+            <!-- Profile Card -->
+            <div class="profile-header-card">
+                <div class="profile-header-content">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="profile-header-info">
+                        <h3 id="passengerProfileName">Guest User</h3>
+                        <p id="passengerProfileEmail">user@example.com</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Search Card -->
             <div class="search-card">
                 <div class="search-input">
@@ -160,14 +177,13 @@
 
             <!-- Live Map Preview -->
             <div class="map-preview" id="mapPreview" onclick="openFullMap()">
-                <div class="map-placeholder">
-                    <i class="fas fa-map-marked-alt"></i>
-                    <p>Tap to view live map</p>
-                    <div class="vehicle-markers">
-                        <span class="vehicle-marker taxi"><i class="fas fa-taxi"></i> 3/4</span>
-                        <span class="vehicle-marker combi"><i class="fas fa-car"></i> 12/15</span>
-                        <span class="vehicle-marker bus"><i class="fas fa-bus"></i> 30/45</span>
-                    </div>
+                <div id="miniMapContainer" class="mini-map"></div>
+                <div class="map-coordinates">
+                    <div><strong>Live sample position</strong></div>
+                    <div id="previewCoordinates">-24.658800, 25.908300</div>
+                </div>
+                <div class="map-preview-footer">
+                    <i class="fas fa-broadcast-tower"></i> Tap to open full live map
                 </div>
             </div>
 
@@ -273,6 +289,17 @@
 
         <!-- Driver Dashboard -->
         <div id="driverDashboard" class="hidden">
+            <!-- Profile Card -->
+            <div class="profile-header-card">
+                <div class="profile-header-content">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="profile-header-info">
+                        <h3 id="driverProfileName">John Modise</h3>
+                        <p id="driverProfileEmail">driver@example.com</p>
+                    </div>
+                </div>
+            </div>
+
             <div class="driver-stats">
                 <div class="stat-card">
                     <i class="fas fa-users"></i>
@@ -360,14 +387,18 @@
 
         <!-- Driver / Passenger Profile Screen -->
         <div id="profileScreen" class="hidden">
-            <div class="search-card">
-                <div class="text-center">
-                    <i class="fas fa-user-circle" style="font-size: 4rem; color: var(--primary-green);"></i>
-                    <h3 id="profileName">Guest User</h3>
-                    <p id="profilePhone">+267 XXXXXXXX</p>
-                    <p id="profileEmail">user@example.com</p>
+            <!-- Profile Header Card -->
+            <div class="profile-header-card profile-card-large">
+                <div class="profile-avatar">
+                    <i class="fas fa-user-circle"></i>
                 </div>
-                <hr class="mt-3 mb-2" style="border-color: var(--border-color);">
+                <h3 id="profileName">Guest User</h3>
+                <p id="profilePhone">+267 XXXXXXXX</p>
+                <p id="profileEmail">user@example.com</p>
+            </div>
+
+            <!-- Profile Details -->
+            <div class="search-card">
                 <div class="profile-details" id="profileDetails"></div>
             </div>
         </div>
